@@ -1,18 +1,32 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Node {
     int data;
     struct Node* next;
 } Node;
 
+void print(Node root)
+{
+    printf("List:\n[ ");
+    for(Node* current = &root; current != NULL; current = current -> next)
+    {
+        printf("%d ", current -> data);
+    }
+    printf("]\n");
+}
+
+
+
 int main(int argc, char* argv[])
 {
-    Node root, element2;
+    Node root;
     root.data = 10;
-    root.next = &element2;
-    element2.data = 11;
-    element2.next = NULL;
-    printf("First: %d\n", root.data);
-    printf("Second: %d\n", root.next -> data);
+    root.next = malloc(sizeof(Node));
+    root.next -> data = 11;
+    root.next -> next = NULL;
+
+    print(root)
+    free(root.next);
     return 0;
 }
