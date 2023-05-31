@@ -14,10 +14,10 @@ void print(Node* tail)
     {
         printf("%d ", curr -> data);
     }
-    printf("]");
+    printf("]\n");
 }
 
-void print(Node* tail, Node* head)
+void print_d(Node* tail, Node* head)
 {
     Node* curr = tail;
     Node* urr = head;
@@ -27,6 +27,40 @@ void print(Node* tail, Node* head)
         curr = curr -> next;
         urr = urr -> prev;
     }
+}
+
+void push(Node** head, int val)
+{
+    Node* new_node = malloc(sizeof(Node));
+    if (new_node == NULL)
+    {
+        return;
+    }
+
+    new_node -> data = val;
+    new_node -> next = NULL;
+    new_node -> prev = *head;
+    (*head) -> next = new_node;
+    *head = new_node;
+}
+
+void deallocate(Node** tail, Node** head)
+{
+    if (*tail == NULL)
+    {
+        return;
+    }
+
+    Node* curr = *tail;
+    while (curr -> next != NULL)
+    {
+        curr = curr -> next;
+        free(curr -> prev);
+    }
+    free(curr);
+    
+    *tail = NULL;
+    *head = NULL;
 }
 
 int main(int argc, char* argv[])
@@ -44,21 +78,16 @@ int main(int argc, char* argv[])
     {
         return 2;
     }
-    tail -> next -> data = 2;
-    tail -> next -> prev = tail;
-    tail -> next -> next = malloc(sizeof(Node));
-    if (tail -> next -> next == NULL)
-    {
-        return 3;
-    }
+    Node* head = tail -> next;
 
-    tail -> next -> next -> data = 3;
-    tail -> next -> next -> prev = tail -> next;
-    tail -> next -> next -> next = NULL;
-    Node* head = tail -> next -> next;
-
+    push(&head, 2);
+    push(&head, 3);
+    push(&head, 4);
+    push(&head, 5);
+    
     print(tail);
-    print(tail, head);
+    print_d(tail, head);
 
+    deallocate(&tail, &head);
     return 0;
 }
