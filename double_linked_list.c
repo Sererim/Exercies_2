@@ -63,6 +63,24 @@ void deallocate(Node** tail, Node** head)
     *head = NULL;
 }
 
+void reverse(Node** tail, Node** head)
+{
+    Node* curr = *tail;
+    Node* next = NULL;
+
+    for (Node* curr = *tail; curr != NULL; curr = next)
+    {
+        next = curr -> next;
+        curr -> next = curr -> prev;
+        curr -> prev = next;
+    }
+    
+    Node* aux = *tail;
+    *tail = *head;
+    *head = aux;
+
+}
+
 int main(int argc, char* argv[])
 {
     Node* tail = malloc(sizeof(Node));
@@ -79,14 +97,20 @@ int main(int argc, char* argv[])
         return 2;
     }
     Node* head = tail -> next;
-
-    push(&head, 2);
+    head -> data = 2;
+    head -> prev = tail;
+    
     push(&head, 3);
     push(&head, 4);
     push(&head, 5);
+    push(&head, 6);
     
     print(tail);
-    print_d(tail, head);
+    // print_d(tail, head);
+
+    reverse(&tail, &head);
+
+    print(tail);
 
     deallocate(&tail, &head);
     return 0;
